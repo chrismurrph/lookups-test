@@ -4,11 +4,9 @@
     [app.root :as root]
     [app.ui :as ui]
     [com.fulcrologic.fulcro.application :as app]
-    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-    [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
+    [com.fulcrologic.fulcro.components :refer [defsc]]
+    [com.fulcrologic.fulcro.mutations :refer [defmutation]]
     [com.fulcrologic.fulcro.data-fetch :as df]
-    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr :refer [defrouter]]
-    [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.rendering.keyframe-render :as keyframe-renderer]
     [com.fulcrologic.fulcro.networking.http-remote :as fhr]))
 
