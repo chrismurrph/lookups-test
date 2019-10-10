@@ -25,6 +25,8 @@
 ;; just return the id, so not even have this resolver, and rely on merge behaviour
 ;; creating the ident that points to the existing product. Instead what happens is that
 ;; all the product information on the client is deleted.
+;; Solution found - see Product for where `:pre-merge` can be used to ensure we keep
+;; what was there before.
 ;;
 (pc/defresolver product-resolver [env {:product/keys [id]}]
   {::pc/input  #{:product/id}
@@ -41,4 +43,4 @@
    ::pc/output [{:organisation/products [:product/id :product/description :product/price]}]}
   {:organisation/products (vec (vals products-table))})
 
-(def resolvers [organisation-resolver invoice-resolver product-resolver])
+(def resolvers [organisation-resolver invoice-resolver #_product-resolver])

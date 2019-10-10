@@ -10,6 +10,11 @@
                 {:keys [time quantity]}]
   {:query [:product/id :product/description :product/price]
    :ident :product/id
+   :pre-merge (fn [{:keys [current-normalized data-tree state-map]}]
+                ;(js/console.log "data-tree" data-tree)
+                ;(js/console.log "current-normalized" current-normalized)
+                ;(js/console.log "state-map" state-map)
+                (merge current-normalized data-tree))
    :css   [[:.row
             {:height                "24px"
              :display               "grid"
@@ -21,14 +26,12 @@
            [:.quantity {:grid-area "quantity" :text-align "right"}]
            [:.price {:grid-area "price" :text-align "right"}]
            [:.extension {:grid-area "extension" :text-align "right"}]]}
-  #_(span (str description ", quantity: " quantity ", price: $" price ", extension: $" (* price quantity)))
   (div :.row (inj/style-element {:component this})
        (div :.time time)
        (div :.desc description)
        (div :.quantity quantity)
        (div :.price (str "$" price))
-       (div :.extension (str "$" (* price quantity)))
-       ))
+       (div :.extension (str "$" (* price quantity)))))
 (def product-ui (comp/factory Product))
 
 (defsc Organisation [this {:organisation/keys [id products]}]

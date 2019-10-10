@@ -16,3 +16,8 @@ reference, not a directive to delete product attribute values, apart from their 
 Looking at `invoice-resolver` you can see that for example `{:product/id 2}` is returned in the map.
 But that is just a trigger for `product-resolver` to lookup the rest of the product details. Couldn't
 client merging behaviour do the same thing?
+
+As it turns out a fairly straightforward solution is to use `:pre-merge` on Product, returning
+`(merge current-normalized data-tree)`. If you returned just `data-tree` that would be the way things
+normally work. `current-normalized` is what was there before - the data that in normal merge operation is
+being discarded.
