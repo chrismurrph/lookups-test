@@ -2,8 +2,11 @@
   "name": "demo",
   "version": "1.0.0",
   "dependencies": {
+    "buffer": "^5.4.3",
+    "process": "^0.11.10",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "shadow-cljs": "^2.8.52"
+    "shadow-cljs": "^2.8.52",
+    "socket.io-client": "^2.3.0"
   }
 }

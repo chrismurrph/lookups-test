@@ -21,22 +21,15 @@
 ;;
 ;; This resolver works fine, but is needlessly returning products that already exist
 ;; in app state.
+;; All the product information already exists on the client. You ought to be able to
+;; just return the id, so not even have this resolver, and rely on merge behaviour
+;; creating the ident that points to the existing product. Instead what happens is that
+;; all the product information on the client is deleted.
 ;;
-(pc/defresolver product-resolver-1 [env {:product/keys [id]}]
+(pc/defresolver product-resolver [env {:product/keys [id]}]
   {::pc/input  #{:product/id}
    ::pc/output [:product/description :product/price]}
   (get products-table id))
-
-;;
-;; All the product information already exists on the client. You ought to be able to
-;; just return the id, as doing here, and rely on merge behaviour creating the ident
-;; that points to the existing product. Instead what happens is that all the product
-;; information on the client is deleted.
-;;
-(pc/defresolver product-resolver-2 [env {:product/keys [id]}]
-  {::pc/input  #{:product/id}
-   ::pc/output [:product/description :product/price]}
-  (select-keys (get products-table id) [:product/id]))
 
 (pc/defresolver invoice-resolver [env {:invoice/keys [id]}]
   {::pc/input  #{:invoice/id}
@@ -48,4 +41,4 @@
    ::pc/output [{:organisation/products [:product/id :product/description :product/price]}]}
   {:organisation/products (vec (vals products-table))})
 
-(def resolvers [organisation-resolver invoice-resolver product-resolver-1])
+(def resolvers [organisation-resolver invoice-resolver product-resolver])
