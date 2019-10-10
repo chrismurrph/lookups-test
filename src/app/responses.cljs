@@ -10,6 +10,7 @@
 ;; Perhaps another workaround is to have pathom on the client,
 ;; basically moving the product-resolver from the server to the
 ;; client.
+;; The thing that worked fine is :pre-merge.
 ;;
 (defmutation loaded-invoice [no-params]
              (action [{:keys [state]}]

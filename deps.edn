@@ -1,6 +1,6 @@
 {:paths   ["src" "resources"]
 
- :deps    {com.fulcrologic/fulcro              {:mvn/version "3.0.2"}
+ :deps    {com.fulcrologic/fulcro              {:mvn/version "3.0.3"}
            com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.6"}
            ring/ring-core                      {:mvn/version "1.7.1"}
            kibu/pushy                          {:mvn/version "0.3.8"}

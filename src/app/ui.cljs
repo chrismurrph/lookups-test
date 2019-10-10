@@ -48,7 +48,8 @@
 (defsc Invoice [this
                 {:invoice/keys [line-items id]}]
   {:query         [:invoice/id {:invoice/line-items (comp/get-query LineItem)}]
-   :initial-state (fn [_] {:invoice/id 1})
+   :initial-state (fn [_] {:invoice/id 1
+                           :invoice/line-items []})
    :ident         :invoice/id
    :css           [[:.headings
                     {:height                "24px"
