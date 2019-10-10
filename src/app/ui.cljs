@@ -3,29 +3,39 @@
             [com.fulcrologic.fulcro-css.localized-dom :refer [span div button br label]]
             [com.fulcrologic.fulcro.data-fetch :as df]
             [com.fulcrologic.fulcro-css.css-injection :as inj]
-            [app.responses :as response]))
+            [app.responses :as response]
+            [app.general :as gen]))
+
+;;
+;; Being used dynamically - see general ns
+;;
+(defsc ProductStub [this props]
+  {:query [:product/id]
+   :ident :product/id})
 
 (defsc Product [this
                 {:product/keys [description price]}
                 {:keys [time quantity]}]
-  {:query [:product/id :product/description :product/price]
-   :ident :product/id
+  {:query     [:product/id :product/description :product/price]
+   :ident     :product/id
    :pre-merge (fn [{:keys [current-normalized data-tree state-map]}]
                 ;(js/console.log "data-tree" data-tree)
                 ;(js/console.log "current-normalized" current-normalized)
                 ;(js/console.log "state-map" state-map)
-                (merge current-normalized data-tree))
-   :css   [[:.row
-            {:height                "24px"
-             :display               "grid"
-             :grid-template-columns "40px 200px 90px 70px 80px"
-             :grid-template-rows    "17px"
-             :grid-template-areas   "\"time desc quantity price extension\""}]
-           [:.time {:grid-area "time" :text-align "left"}]
-           [:.desc {:grid-area "desc"}]
-           [:.quantity {:grid-area "quantity" :text-align "right"}]
-           [:.price {:grid-area "price" :text-align "right"}]
-           [:.extension {:grid-area "extension" :text-align "right"}]]}
+                (if gen/stub-way?
+                  data-tree
+                  (merge current-normalized data-tree)))
+   :css       [[:.row
+                {:height                "24px"
+                 :display               "grid"
+                 :grid-template-columns "40px 200px 90px 70px 80px"
+                 :grid-template-rows    "17px"
+                 :grid-template-areas   "\"time desc quantity price extension\""}]
+               [:.time {:grid-area "time" :text-align "left"}]
+               [:.desc {:grid-area "desc"}]
+               [:.quantity {:grid-area "quantity" :text-align "right"}]
+               [:.price {:grid-area "price" :text-align "right"}]
+               [:.extension {:grid-area "extension" :text-align "right"}]]}
   (div :.row (inj/style-element {:component this})
        (div :.time time)
        (div :.desc description)
@@ -39,7 +49,7 @@
    :ident :organisation/id})
 
 (defsc LineItem [this {:line-item/keys [id product quantity]}]
-  {:query [:line-item/id {:line-item/product (comp/get-query Product)} :line-item/quantity]
+  {:query [:line-item/id {:line-item/product (comp/get-query ProductStub)} :line-item/quantity]
    :ident :line-item/id}
   (div (product-ui (comp/computed product {:time id :quantity quantity}))))
 
@@ -48,8 +58,7 @@
 (defsc Invoice [this
                 {:invoice/keys [line-items id]}]
   {:query         [:invoice/id {:invoice/line-items (comp/get-query LineItem)}]
-   :initial-state (fn [_] {:invoice/id 1
-                           :invoice/line-items []})
+   :initial-state (fn [_] {:invoice/id 1})
    :ident         :invoice/id
    :css           [[:.headings
                     {:height                "24px"

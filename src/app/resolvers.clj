@@ -1,6 +1,7 @@
 (ns app.resolvers
   (:require
-    [com.wsscode.pathom.connect :as pc]))
+    [com.wsscode.pathom.connect :as pc]
+    [app.general :as gen]))
 
 (def line-items-table
   {1 {:line-item/id 1 :line-item/quantity 1 :line-item/product {:product/id 1}}
@@ -43,4 +44,9 @@
    ::pc/output [{:organisation/products [:product/id :product/description :product/price]}]}
   {:organisation/products (vec (vals products-table))})
 
-(def resolvers [organisation-resolver invoice-resolver #_product-resolver])
+;;
+;; No reason not to have the resolver - the client is not going to be asking for product information
+;; for calls past initial load.
+;;
+(def resolvers (cond-> [organisation-resolver invoice-resolver]
+                       gen/stub-way? (conj product-resolver)))
